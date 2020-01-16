@@ -34,7 +34,7 @@ const AppContainer = ({
           });
         });
 
-        addCollectionAndDocuments('collections', collectionArray);
+        addCollectionAndDocuments('collections', collectionArray.map(({ title, items }) => ({ title, items })));
       } else {
         setCurrentUser(null);
       }
