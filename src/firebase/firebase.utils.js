@@ -1,9 +1,10 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import { fbConfig } from './config';
 
 const config = {
-  // Here firebase config
+  ...fbConfig,
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -12,7 +13,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const userRef = firestore.doc(`users/${userAuth.uid}`);
 
   const snapShot = await userRef.get();
-  
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -30,6 +30,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
 
   return userRef;
+};
+
+export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  console.log(collectionRef);
 };
 
 firebase.initializeApp(config);

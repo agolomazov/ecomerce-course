@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { setCurrentUser } from './redux/user/user.actions';
 import { currentUserSelector } from './redux/user/user.selectors';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import './App.css';
 
 import { Header } from './components/header/header.component';
@@ -15,10 +15,12 @@ import { HomePage } from './pages/homepage/homepage.component';
 import { ShopPage } from './pages/shop/shop.component';
 import { SignInAndSignUpPage } from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { CheckoutPage } from './pages/checkout/checkout.component';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 const AppContainer = ({
   setCurrentUser,
-  currentUser
+  currentUser,
+  collectionArray,
 }) => {
 
   useEffect(() => {
@@ -31,6 +33,8 @@ const AppContainer = ({
             ...snapShot.data()
           });
         });
+
+        addCollectionAndDocuments('collections', collectionArray);
       } else {
         setCurrentUser(null);
       }
@@ -56,6 +60,7 @@ const AppContainer = ({
 
 const mapStateToProps = createStructuredSelector({
   currentUser: currentUserSelector,
+  collectionArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = ({
